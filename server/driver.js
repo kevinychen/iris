@@ -6,11 +6,11 @@ Driver = function(db) {
 
 Driver.prototype.handleGet = function(req, res) {
 
-  if (!req.params.user_id) {
+  if (!req.params.id) {
     res.send(400, "Bad Request");
   } else {
 
-    var userIdInfo = req.params.user_id;
+    var userIdInfo = req.params.id;
 
     this.db.collection('users', function(err, collection) {
 
@@ -18,7 +18,7 @@ Driver.prototype.handleGet = function(req, res) {
         userId: userIdInfo
       }, {
         "_id": 0
-      }).toArray(function(err, item) {
+      }, function(err, item) {
 
         if (err)
           res.send(500, "Internal Server Error");
@@ -99,7 +99,7 @@ function addUser(db, userIdInfo, firstNameInfo, lastNameInfo, emailInfo, dobInfo
       lastName: lastNameInfo,
       email: emailInfo,
       dob: dobInfo,
-      services: ["iris"]
+      services: [{"name": "Iris"}]
     }
 
     if (req.body.middle_name)
@@ -145,11 +145,11 @@ function addUser(db, userIdInfo, firstNameInfo, lastNameInfo, emailInfo, dobInfo
 
 Driver.prototype.handlePost = function(req, res) {
 
-  if (!req.params.user_id) {
+  if (!req.params.id) {
     res.send(400, "Bad Request");
   } else {
 
-    var userIdInfo = req.params.user_id;
+    var userIdInfo = req.params.id;
 
     if (req.body.service) {
 
@@ -206,15 +206,21 @@ Driver.prototype.handlePost = function(req, res) {
       if (req.body.card_number)
         update.cardNumber = req.body.card_number;
 
-      collection.update({
-        userId: userIdInfo
-      }, update, function(err, result) {
+      this.db.collection('users', function(err, collection) {
 
-        if (err)
-          res.send(500, "Internal Server Error");
-        else {
-          res.send(200, "OK");
-        }
+        collection.update({
+          userId: userIdInfo
+        }, {
+          $set: update
+        }, function(err, result) {
+
+          if (err)
+            res.send(500, "Internal Server Error");
+          else {
+            res.send(200, "OK");
+          }
+
+        });
 
       });
 

@@ -4,13 +4,24 @@
 
 # Server
 
+## How to get certificates for TLS
+
+Open the terminal and `cd` into `server/openssl/`.
+
+Run `openssl genrsa -out key.pem 2048` and `openssl req -new -sha256 -key key.pem -out csr.pem`.
+This will ask you questions about your organization in order to provide you a certificate for TLS.
+
+After answering them, run `openssl x509 -req -in ryans-csr.pem -signkey ryans-key.pem -out ryans-cert.pem`
+
 ## How to start the server
 
-Open the terminal and run `mongod` (make sure you have mongoDB)
+Open the terminal and run `mongod` (make sure you have mongoDB). If this doesn't work, try `sudo mongod`.
 
-In a different terminal window, `cd` into `/server/` from the terminal and run `npm install` (make sure you have node and npm)
+In a different terminal window, `cd` into `server/` from the terminal and run `npm install` (make sure you have node and npm)
 
-Run `node .` to start the server
+Run `node .` to start the server.
+
+In order to talk to the server, use the base URL `https://localhost:3000/`. It might complain that you do not have a valid TLS certificate (as we don't), but that's fine for now.
 
 # Endpoints
 
@@ -35,9 +46,7 @@ Response:
 	"zip_code": (optional) "02139",
 	"card_number": (optional) "1234123412340000",
 	"services": [{
-		"name": "Facebook",
-		"username": "username",
-		"password": "password"
+		"name": "Iris"
 	},{
 		"name": "GitHub",
 		"username": "username",
