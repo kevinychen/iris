@@ -1,0 +1,12 @@
+{
+    "manifest_version": 2,
+    "name": "Iris",
+    "description": "Chrome extension to interface with Iris.",
+    "version": "1.0",
+    "background": {"page": "iris.html"},
+    "content_scripts": [{
+        "matches": ["*://*/*"],
+        "js": ["iris_request.js"],
+        "run_at": "document_start"
+    }]
+}

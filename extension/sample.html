@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+    <head>
+        <script src="iris/jquery.min.js"></script>
+    </head>
+    <body>
+        <div id="name">
+        </div>
+    </body>
+    <script>
+        iris_request(['name'], function(info) {
+            $('#name').text('Hello, ' + info.name);
+        });
+    </script>
+</html>
