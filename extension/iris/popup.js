@@ -11,4 +11,15 @@ document.forms[0].onsubmit = function(e) {
     });
 };
 
+chrome.tabs.getCurrent(function(tab) {
+    var backgroundPage = chrome.extension.getBackgroundPage();
+    var currentRequest = backgroundPage.openRequests[tab.id];
+    $('#requester').text($.url(currentRequest.url).attr('host'));
+    for (var key in currentRequest.args) {
+        var el = $('<li>').text(currentRequest.args[key]);
+        $('#requested_info').append(el);
+    }
+    $('#status').show();
+});
+
 $('#user').focus();

@@ -3,17 +3,18 @@
     <head>
         <title>Iris Login</title>
         <script src="jquery.min.js"></script>
+        <script src="purl.js"></script>
         <link rel="stylesheet" type="text/css" href="resources/iris.css">
     </head>
     <body>
         <div class="container">
             <form>
                 <img src="resources/logo.png" alt="">
-                <p><i>website.mit.edu</i> requests your:</p>
-                <ul>
-                    <li>name.</li>
-                    <li>email address.</li>
-                </ul>
+                <div id="status">
+                    <p><i id="requester">website.com</i> requests your:</p>
+                    <ul id="requested_info">
+                    </ul>
+                </div>
                 <table>
                     <tr>
                         <td>User ID:</td>

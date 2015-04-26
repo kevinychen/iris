@@ -39,6 +39,7 @@ chrome.runtime.onMessage.addListener(function(args, sender, sendResponse) {
     }, function(tab) {
         openRequests[tab.id] = {
             args: args,
+            url: sender.tab.url,
             sendResponse: sendResponse
         };
         chrome.windows.create({
