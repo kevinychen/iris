@@ -2,30 +2,45 @@
  * Javascript on background page of Iris extension
  */
 
-// mapping from tab id to sendResponse functions
-prevSendResponses = {};
+// mapping from Iris websites to login request info
+openRequests = {};
 
+// loginData is a dictionary of user credentials
+//   e.g. {user: 'Kevin', pass: 'secret'}
 // args is a list of attributes that the website wants
 //   e.g. ['name', 'email', 'phone number']
 // sends a dictionary with the attribute keys
 //   e.g. {name: 'Kevin', email: 'kyc@mit.edu', 'phone number': '123-456'}
+function retrieveInfo(loginData, args, callback) {
+    // TODO currently hardcoded
+    if (loginData.user === 'Kevin') {
+        callback({name: 'Kevin', email: 'kyc@mit.edu'});
+    } else {
+        callback({name: 'guest', email: 'idunno@gmail.com'});
+    }
+}
+
 chrome.runtime.onMessage.addListener(function(args, sender, sendResponse) {
     // Check if this tab is one of our popups
-    var prevSendResponse = prevSendResponses[sender.tab.id];
-    if (prevSendResponse) {
-        // TODO use password to encrypt info
-        prevSendResponse({name: 'Kevin'});
-        prevSendResponses[sender.tab.id] = undefined;
-        sendResponse();
-        return;
+    var openRequest = openRequests[sender.tab.id];
+    if (openRequest) {
+        retrieveInfo(args, openRequest.args, function(info) {
+            openRequest.sendResponse(info);
+            openRequests[sender.tab.id] = undefined;
+            sendResponse();
+        });
+        return true;
     }
 
-    // Otherwise, create a new popup
+    // Otherwise, create a new popup and store this website's info
     chrome.tabs.create({
         url: chrome.extension.getURL('iris.html'),
         active: false
     }, function(tab) {
-        prevSendResponses[tab.id] = sendResponse;
+        openRequests[tab.id] = {
+            args: args,
+            sendResponse: sendResponse
+        };
         chrome.windows.create({
             tabId: tab.id,
             type: 'popup',
@@ -37,9 +52,9 @@ chrome.runtime.onMessage.addListener(function(args, sender, sendResponse) {
 
 // Remove closed popup tabs from prevSendResponses
 chrome.tabs.onRemoved.addListener(function(tabId, info) {
-    var prevSendResponse = prevSendResponses[tabId];
-    if (prevSendResponse) {
-        prevSendResponse({error: 'User closed window.'});
-        prevSendResponses[tabId] = undefined;
+    var openRequest = openRequests[tabId];
+    if (openRequest) {
+        openRequest.sendResponse({error: 'User closed window.'});
+        openRequests[tabId] = undefined;
     }
 });
