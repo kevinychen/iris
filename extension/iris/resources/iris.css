@@ -1,0 +1,68 @@
+@font-face {
+    font-family: MuseoSans;
+    font-style: normal;
+    font-weight: 400;
+    src: url('museosans.woff') format('woff');
+}
+
+.container {
+    position: absolute;
+    left: 50%;
+    top: 170px;
+    border: 1px solid #ddd;
+    width: 300px;
+    margin: -150px 0 0 -150px;
+    text-align: center;
+    font-family: MuseoSans;
+    font-size: 18px;
+    -webkit-box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.container img {
+    width: 160px;
+}
+
+.container p {
+    margin: 0;
+}
+
+.container ul {
+    list-style-type: none;
+    padding-left: 0em;
+    font-size: 20px;
+}
+
+.container table {
+    margin: 0 auto;
+}
+
+.container td {
+    padding: 4px;
+    font-size: 18px;
+}
+
+.btn {
+    -webkit-border-radius: 28;
+    -moz-border-radius: 28;
+    border-radius: 28px;
+    -webkit-box-shadow: 0px 1px 3px #666666;
+    -moz-box-shadow: 0px 1px 3px #666666;
+    box-shadow: 0px 1px 3px #666666;
+    color: #000000;
+    font-size: 18px;
+    background: #f9f9f9;
+    padding: 5px 15px 5px 15px;
+    text-decoration: none;
+    width: 100px;
+    margin: 0 auto;
+    margin: 12px;
+    text-align: center;
+}
+
+.btn:hover {
+    background: #d0d0d0;
+    text-decoration: none;
+    cursor: pointer;
+    cursor: hand;
+}

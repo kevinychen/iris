@@ -34,7 +34,7 @@ chrome.runtime.onMessage.addListener(function(args, sender, sendResponse) {
 
     // Otherwise, create a new popup and store this website's info
     chrome.tabs.create({
-        url: chrome.extension.getURL('iris.html'),
+        url: chrome.extension.getURL('popup.html'),
         active: false
     }, function(tab) {
         openRequests[tab.id] = {
@@ -44,6 +44,8 @@ chrome.runtime.onMessage.addListener(function(args, sender, sendResponse) {
         chrome.windows.create({
             tabId: tab.id,
             type: 'popup',
+            width: 500,
+            height: 400,
             focused: true
         });
     });

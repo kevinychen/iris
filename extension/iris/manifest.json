@@ -4,7 +4,7 @@
     "description": "Chrome extension to interface with Iris.",
     "version": "1.0",
     "background": {
-        "scripts": ["iris.js"],
+        "scripts": ["main.js"],
         "persistent": false
     },
     "content_scripts": [{

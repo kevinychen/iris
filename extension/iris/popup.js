@@ -10,3 +10,5 @@ document.forms[0].onsubmit = function(e) {
         window.close();
     });
 };
+
+$('#user').focus();
