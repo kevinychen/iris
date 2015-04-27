@@ -4,6 +4,10 @@
 
 // Define Javascript function for websites
 function iris_request(args, callback) {
+    if (document.webkitVisibilityState === 'hidden') {
+        return;  // phantom tab; ignore
+    }
+
     var requestDiv = document.getElementById('iris_request_div');
 
     var requestEvent = document.createEvent('Event');
@@ -27,13 +31,14 @@ requestDiv.style.display = 'none';
 requestDiv.addEventListener('iris_request_event', function() {
     var args = JSON.parse(requestDiv.innerText);
 
-    chrome.runtime.sendMessage(args, function(response) {
+    chrome.runtime.onMessage.addListener(function(response, sender) {
         var responseEvent = document.createEvent('Event');
         responseEvent.initEvent('iris_response_event', true, true);
 
         requestDiv.innerText = JSON.stringify(response);
         requestDiv.dispatchEvent(responseEvent);
     });
+    chrome.runtime.sendMessage(args);
 });
 document.documentElement.appendChild(requestDiv);
 

@@ -24,12 +24,13 @@ chrome.runtime.onMessage.addListener(function(args, sender, sendResponse) {
     // Check if this tab is one of our popups
     var openRequest = openRequests[sender.tab.id];
     if (openRequest) {
-        retrieveInfo(args, openRequest.args, function(info) {
-            openRequest.sendResponse(info);
+        var credentials = args;
+        retrieveInfo(credentials, openRequest.args, function(info) {
+            chrome.tabs.sendMessage(openRequest.tab.id, info, function(response) {});
             openRequests[sender.tab.id] = undefined;
             sendResponse();
         });
-        return true;
+        return;
     }
 
     // Otherwise, create a new popup and store this website's info
@@ -39,8 +40,7 @@ chrome.runtime.onMessage.addListener(function(args, sender, sendResponse) {
     }, function(tab) {
         openRequests[tab.id] = {
             args: args,
-            url: sender.tab.url,
-            sendResponse: sendResponse
+            tab: sender.tab
         };
         chrome.windows.create({
             tabId: tab.id,
@@ -50,14 +50,15 @@ chrome.runtime.onMessage.addListener(function(args, sender, sendResponse) {
             focused: true
         });
     });
-    return true;  // asynchronous sendMessage
 });
 
 // Remove closed popup tabs from prevSendResponses
 chrome.tabs.onRemoved.addListener(function(tabId, info) {
     var openRequest = openRequests[tabId];
     if (openRequest) {
-        openRequest.sendResponse({error: 'User closed window.'});
+        chrome.tabs.sendMessage(openRequest.tab.id, {
+            error: 'User closed window.'
+        });
         openRequests[tabId] = undefined;
     }
 });
