@@ -3,15 +3,39 @@
     <head>
         <title>Iris Profile</title>
         <script src="jquery.min.js"></script>
-        <script src="profile.js"></script>
         <link rel="stylesheet" type="text/css" href="resources/style.css">
     </head>
     <body>
         <div class="container">
             <img src="resources/logo.png" alt="">
             <div>Profile</div>
-            <div id="info"></div>
+            <div id="profile">
+                <table>
+                    <tr>
+                        <td>User ID:</td>
+                        <td><input type="text" id="user" disabled/></td>
+                    </tr>
+                    <tr>
+                        <td>First Name:</td>
+                        <td><input type="text" id="firstName" disabled/></td>
+                    </tr>
+                    <tr>
+                        <td>Last Name:</td>
+                        <td><input type="text" id="lastName" disabled/></td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td><input type="text" id="email"/></td>
+                    </tr>
+                    <tr>
+                        <td>DOB:</td>
+                        <td><input type="text" id="dob"/></td>
+                    </tr>
+                </table>
+                <input id="submit" class="btn" value="Save"/>
+            </div>
         </div>
     </body>
+    <script src="profile.js"></script>
 </html>
 

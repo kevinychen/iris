@@ -1,48 +1,49 @@
-// http://stackoverflow.com/questions/10340481/popup-window-in-chrome-extension
-function sendCredentials() {
-    var userID = document.getElementById('user').value;
-    var password = document.getElementById('pass').value;
-    chrome.runtime.sendMessage({
-        user: userID,
-        pass: password
-    }, function() {
-        window.close();
+/*
+ * loginData is a dictionary of user credentials
+ *   e.g. {user: 'Kevin', pass: 'secret'}
+ * args is a list of attributes that the website wants
+ *   e.g. ['name', 'email', 'phone number']
+ * sends a dictionary with the attribute keys
+ *   e.g. {name: 'Kevin', email: 'kyc@mit.edu', 'phone number': '123-456'}
+ */
+function retrieveInfo(loginData, args, callback) {
+    $.get("https://simple.mit.edu:8107/api/users/" + loginData.user, function(res) {
+        var info = {userId: res.userId};
+        for (var key in args) {
+            info[args[key]] = res[args[key]];
+        }
+        callback(info);
     });
 }
 
 chrome.tabs.getCurrent(function(myTab) {
     var backgroundPage = chrome.extension.getBackgroundPage();
-    var currentRequest = backgroundPage.openRequests[myTab.id];
+    var currReq = backgroundPage.openRequests[myTab.id];
 
-    if (currentRequest) {
-        $('#requester').text($.url(currentRequest.tab.url).attr('host'));
-        for (var key in currentRequest.args) {
-            var el = $('<li>').text(currentRequest.args[key]);
+    if (currReq.tab.url == chrome.extension.getURL('profile.html')) {
+        $('#profile').show();
+    } else {
+        $('#requester').text($.url(currReq.tab.url).attr('host'));
+        for (var key in currReq.args) {
+            var el = $('<li>').text(currReq.args[key]);
             $('#requested_info').append(el);
         }
         $('#status').show();
-    } else {
-        $('#profile').show();
     }
 
     document.getElementById('form').onsubmit = function(e) {
         e.preventDefault(); // Prevent submission
 
-        if (currentRequest) {
-            sendCredentials();
-        } else {
-            // Open profile page
-            chrome.tabs.create({
-                url: chrome.extension.getURL('profile.html'),
-                active: false
-            }, function(newTab) {
-                backgroundPage.openRequests[myTab.id] = {
-                    args: ['*'],
-                    tab: newTab
-                };
-                sendCredentials();
-            });
-        }
+        var userID = document.getElementById('user').value;
+        var password = document.getElementById('pass').value;
+        retrieveInfo({
+            user: userID,
+            pass: password
+        }, currReq.args, function(info) {
+            chrome.tabs.sendMessage(currReq.tab.id, info);
+            backgroundPage.openRequests[myTab.id] = undefined;
+            window.close();
+        });
     };
 });
 

@@ -4,8 +4,11 @@
 
 // Define Javascript function for websites
 function iris_request(args, callback) {
-    if (document.webkitVisibilityState === 'hidden') {
-        return;  // phantom tab; ignore
+    // http://stackoverflow.com/questions/20637519/how-to-disallow-chrome-prerendering
+    if (document.webkitVisibilityState == 'prerender' ||
+            document.visibilityState == 'prerender' ||
+            document.visibilityState[0] == 'prerender') {
+        alert('Disable prerendering');
     }
 
     var requestDiv = document.getElementById('iris_request_div');
