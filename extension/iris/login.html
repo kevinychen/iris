@@ -4,17 +4,21 @@
         <title>Iris Login</title>
         <script src="jquery.min.js"></script>
         <script src="purl.js"></script>
-        <link rel="stylesheet" type="text/css" href="resources/iris.css">
+        <link rel="stylesheet" type="text/css" href="resources/style.css">
     </head>
     <body>
         <div class="container">
+            <img src="resources/logo.png" alt="">
+            <div id="status">
+                <p><i id="requester">website.com</i> requests your:</p>
+                <ul id="requested_info">
+                </ul>
+            </div>
+            <div id="profile">
+                <p>Manage your Iris profile</p>
+                <ul></ul>
+            </div>
             <form>
-                <img src="resources/logo.png" alt="">
-                <div id="status">
-                    <p><i id="requester">website.com</i> requests your:</p>
-                    <ul id="requested_info">
-                    </ul>
-                </div>
                 <table>
                     <tr>
                         <td>User ID:</td>
@@ -29,5 +33,5 @@
             </form>
         </div>
     </body>
-    <script src="popup.js"></script>
+    <script src="login.js"></script>
 </html>

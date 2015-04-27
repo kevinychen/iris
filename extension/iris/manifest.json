@@ -11,5 +11,8 @@
         "matches": ["*://*/*"],
         "js": ["iris_request.js"],
         "run_at": "document_start"
-    }]
+    }],
+    "browser_action": {
+        "default_icon": "resources/logo.png"
+    }
 }

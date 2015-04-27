@@ -34,7 +34,7 @@ chrome.runtime.onMessage.addListener(function(args, sender, sendResponse) {
 
     // Otherwise, create a new popup and store this website's info
     chrome.tabs.create({
-        url: chrome.extension.getURL('popup.html'),
+        url: chrome.extension.getURL('login.html'),
         active: false
     }, function(tab) {
         openRequests[tab.id] = {
@@ -60,4 +60,12 @@ chrome.tabs.onRemoved.addListener(function(tabId, info) {
         openRequest.sendResponse({error: 'User closed window.'});
         openRequests[tabId] = undefined;
     }
+});
+
+// Browser action opens profile page
+chrome.browserAction.onClicked.addListener(function(tab) {
+    chrome.tabs.create({
+        url: chrome.extension.getURL('login.html'),
+        active: true
+    });
 });
