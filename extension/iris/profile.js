@@ -1,3 +1,5 @@
+const SERVER = 'https://simple.mit.edu:8107/api/users/';
+
 chrome.runtime.onMessage.addListener(function(info, sender) {
     if (sender.url) {
         return;  // only accept message from main.js
@@ -8,12 +10,30 @@ chrome.runtime.onMessage.addListener(function(info, sender) {
     }
     $('#user').val(info.userId);
     $('#firstName').val(info.firstName);
+    $('#middleName').val(info.middleName);
     $('#lastName').val(info.lastName);
     $('#email').val(info.email);
     $('#dob').val(info.dob);
-    $('#submit').on('click', function() {
-        console.log('save');
+    $('#homePhone').val(info.homePhone);
+    $(':input').on('input', function() {
+        if (!$('#save').is(':visible')) {
+            $('#save').slideDown();
+        }
+    });
+    $('#save').on('click', function() {
+        $('#save').slideUp();
+        $.post(SERVER + $('#user').val(), {
+            middle_name: $('#middleName').val(),
+            home_phone: $('#homePhone').val(),
+        });
     });
     $('#profile').show();
 });
-chrome.runtime.sendMessage(['firstName', 'lastName', 'email', 'dob']);
+chrome.runtime.sendMessage([
+        'firstName',
+        'middleName',
+        'lastName',
+        'email',
+        'dob',
+        'homePhone',
+        ]);

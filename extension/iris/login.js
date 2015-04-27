@@ -1,3 +1,5 @@
+const SERVER = 'https://simple.mit.edu:8107/api/users/';
+
 /*
  * loginData is a dictionary of user credentials
  *   e.g. {user: 'Kevin', pass: 'secret'}
@@ -7,7 +9,7 @@
  *   e.g. {name: 'Kevin', email: 'kyc@mit.edu', 'phone number': '123-456'}
  */
 function retrieveInfo(loginData, args, callback) {
-    $.get("https://simple.mit.edu:8107/api/users/" + loginData.user, function(res) {
+    $.get(SERVER + loginData.user, function(res) {
         var info = {userId: res.userId};
         for (var key in args) {
             info[args[key]] = res[args[key]];
