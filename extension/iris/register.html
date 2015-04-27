@@ -9,16 +9,16 @@
     <body>
         <div class="container">
             <img src="resources/logo.png" alt="">
-            <div>Profile</div>
-            <div id="profile">
+            <div>Register for an Iris account</div>
+            <form id="form">
                 <table>
                     <tr>
                         <td>User ID:</td>
-                        <td><input type="text" id="user" disabled/></td>
+                        <td><input type="text" id="user" required/></td>
                     </tr>
                     <tr>
                         <td>First Name:</td>
-                        <td><input type="text" id="firstName" disabled/></td>
+                        <td><input type="text" id="firstName" required/></td>
                     </tr>
                     <tr>
                         <td>Middle Name:</td>
@@ -26,25 +26,29 @@
                     </tr>
                     <tr>
                         <td>Last Name:</td>
-                        <td><input type="text" id="lastName" disabled/></td>
+                        <td><input type="text" id="lastName" required/></td>
                     </tr>
                     <tr>
                         <td>Email:</td>
-                        <td><input type="text" id="email" disabled/></td>
+                        <td><input type="text" id="email" required/></td>
                     </tr>
                     <tr>
                         <td>DOB:</td>
-                        <td><input type="text" id="dob" disabled/></td>
+                        <td><input type="text" id="dob" required/></td>
                     </tr>
                     <tr>
                         <td>Home Phone:</td>
                         <td><input type="text" id="homePhone"/></td>
                     </tr>
+                    <tr>
+                        <td>Password:</td>
+                        <td><input type="password" id="password"/></td>
+                    </tr>
                 </table>
-                <input id="save" type="submit" class="btn" value="Save"/>
-            </div>
+                <input id="submit" type="submit" class="btn" value="Register"/>
+            </form>
         </div>
     </body>
-    <script src="profile.js"></script>
+    <script src="register.js"></script>
 </html>
 

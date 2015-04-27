@@ -8,7 +8,7 @@ openRequests = {};
 chrome.runtime.onMessage.addListener(function(args, sender, sendResponse) {
     // Create a popup and store this website's info
     chrome.tabs.create({
-        url: chrome.extension.getURL('login.html'),
+        url: myURL('login.html'),
         active: false
     }, function(tab) {
         openRequests[tab.id] = {
@@ -39,7 +39,7 @@ chrome.tabs.onRemoved.addListener(function(tabId, info) {
 // Browser action opens profile page
 chrome.browserAction.onClicked.addListener(function(tab) {
     chrome.tabs.create({
-        url: chrome.extension.getURL('profile.html'),
+        url: myURL('profile.html'),
         active: true
     });
 });

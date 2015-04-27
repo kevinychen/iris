@@ -1,5 +1,3 @@
-const SERVER = 'https://simple.mit.edu:8107/api/users/';
-
 chrome.runtime.onMessage.addListener(function(info, sender) {
     if (sender.url) {
         return;  // only accept message from main.js
