@@ -32,29 +32,15 @@ Response:
 ```
 {
 	"user_id": "akshayp29",
-	"first_name": "Akshay",
-	"last_name": "Padmanabha",
-	"email": "akshayp29@gmail.com",
-	"dob": "07/29/96",
-	"middle_name": (optional) "Bradley",
-	"home_phone": (optional) "1234567890",
-	"mobile_phone": (optional) "2345678901",
-	"work_phone": (optional) "3456789012",
-	"address": (optional) "410 Memorial Drive",
-	"city": (optional) "Cambridge",
-	"state": (optional) "MA",
-	"zip_code": (optional) "02139",
-	"card_number": (optional) "1234123412340000",
-	"services": [{
-		"name": "Iris"
-	},{
-		"name": "GitHub",
-		"username": "username",
-		"password": "password"
-	}]
+	"auth": {
+		"e": "65",
+		"n": "283509283507230857230852038509235"
+	},
+	"encryption_params": "JSONBlob",
+	"data": "10j1n3f0ine02mf02ef02n0"
 }
 
-Note: all of the fields in the above request are encrypted
+Note: "e" and "n" are strings, to assist in parsing big numbers
 ```
 
 Create a user in the database: `PUT /api/users/`
@@ -64,22 +50,15 @@ Request:
 ```
 {
 	"user_id": "akshayp29",
-	"first_name": "Akshay",
-	"last_name": "Padmanabha",
-	"email": "akshayp29@gmail.com",
-	"dob": "07/29/96",
-	"middle_name": (optional) "Bradley",
-	"home_phone": (optional) "1234567890",
-	"mobile_phone": (optional) "2345678901",
-	"work_phone": (optional) "3456789012",
-	"address": (optional) "410 Memorial Drive",
-	"city": (optional) "Cambridge",
-	"state": (optional) "MA",
-	"zip_code": (optional) "02139",
-	"card_number": (optional) "1234123412340000"
+	"auth": {
+		"e": "65",
+		"n": "283509283507230857230852038509235"
+	},
+	"encryption_params": "JSONBlob",
+	"data": "10j1n3f0ine02mf02ef02n0"
 }
 
-Note: all of the fields in the above request are encrypted
+Note: "e" and "n" are strings, to assist in parsing big numbers
 ```
 
 Response:
@@ -94,36 +73,21 @@ Request:
 
 ```
 {
-	"middle_name": (optional) "Bradley",
-	"home_phone": (optional) "1234567890",
-	"mobile_phone": (optional) "2345678901",
-	"work_phone": (optional) "3456789012",
-	"address": (optional) "410 Memorial Drive",
-	"city": (optional) "Cambridge",
-	"state": (optional) "MA",
-	"zip_code": (optional) "02139",
-	"card_number": (optional) "1234123412340000"
-}
-```
-
-Response:
-
-```
-200 OK
-```
-
-Add a service to a user's account: `POST /api/users/{user_id}`
-
-Request:
-
-```
-{
-	"service": {
-		"name": "Facebook",
-		"username": "username",
-		"password": "password"
+	"old_auth": {
+		"p": "893259872398572983752981",
+		"q": "891u258917250971203"
 	}
+	"new_auth": {
+		"e": "65",
+		"n": "283509283507230857230852038509235"
+	},
+	"data": (optional) "10j1n3f0ine02mf02ef02n0",
+	"encryption_params": (optional) "JSONBlob",
 }
+
+Note: "e", "n", "p", and "q" are strings, to assist in parsing big numbers
+Also, "p" and "q" can be interchanged
+Furthermore, the "data" field in this post request replaces the previous "data" field, given that the authorization was successful.
 ```
 
 Response:
