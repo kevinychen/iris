@@ -2,6 +2,15 @@
 
 6.857 Project
 
+# Demo
+
+Visit `iris-demo.meteor.com` to work with the demo. To run locally, 
+
+```
+cd iris-demo
+meteor
+```
+
 # Server
 
 ## How to get certificates for TLS
