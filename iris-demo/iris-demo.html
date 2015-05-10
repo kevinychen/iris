@@ -12,8 +12,6 @@
         Hide Completed Tasks
       </label>
 
-      {{> loginButtons}}
-
       {{#if currentUser}}
         <form class="new-task">
           <input type="text" name="text" placeholder="Type to add new tasks" />
@@ -27,6 +25,11 @@
       {{/each}}
     </ul>
   </div>
+  <script>
+      iris_request({required: ['firstName']}, function(info) {
+          Accounts.createUser({username: info.firstName, password: 'special-iris-password-lala'});
+      });
+  </script>
 </body>
 
 <template name="task">
