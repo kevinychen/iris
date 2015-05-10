@@ -1,4 +1,6 @@
 (function() {
+    $('#userID').focus();
+
     function fillInfo(info) {
         var html = '';
         for (var attr in info) {
@@ -17,19 +19,29 @@
                 }
             });
         }
+        $('#profile').find(':input').attr('disabled', 'disabled');
     }
 
     if (localCache.encrypted) {
-        $('userID').val(localCache.encrypted.userId);
+        $('#userID').val(localCache.encrypted.userId);
+        $('#password').focus();
+    }
+    if (localCache.decrypted) {
+        $('#password').attr('placeholder', 'Enter to edit information');
+        fillInfo(localCache.decrypted);
     }
 
     $('#userID').change(function() {
         retrieveEncrypted($('#userID').val(), function() {});
     });
     $('#password').on('input', function() {
+        if (localCache.encrypted.userId !== $('#userID').val()) {
+            return;
+        }
         var decrypted = decrypt($('#password').val(), localCache.encrypted);
         if (decrypted) {
             fillInfo(decrypted);
+            $('#profile').find(':input').removeAttr('disabled');
         }
     });
 
@@ -43,6 +55,4 @@
         });
         update($('#userID').val(), $('#password').val(), postInfo);
     });
-
-    $('#userID').focus();
 })();

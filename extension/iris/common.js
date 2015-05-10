@@ -15,9 +15,6 @@ function retrieveEncrypted(userID, callback) {
 }
 
 function decrypt(password, encrypted) {
-    if (localCache.decrypted && localCache.decrypted.user_id == encrypted.user_id) {
-        return localCache.decrypted;
-    }
     try {
         localCache.decrypted = JSON.parse(sjcl.decrypt(
                     password, encrypted.encryptionParams));

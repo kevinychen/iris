@@ -1,3 +1,9 @@
+$('#userID').focus();
+
+$('#register').on('click', function() {
+    window.location.href = myURL('register.html');
+});
+
 getCurrentRequest(function(currReq) {
     var service = $.url(currReq.tab.url).attr('host');
 
@@ -23,15 +29,23 @@ getCurrentRequest(function(currReq) {
         $('#userID').val(localCache.encrypted.userId);
         $('#password').focus();
     }
+    if (localCache.decrypted) {
+        $('#password').attr('placeholder', 'Enter to edit information');
+        $('#login').show();
+        $('#login').focus();
+    }
 
     $('#userID').change(function() {
         retrieveEncrypted($('#userID').val(), function() {});
     });
     $('#password').on('input', function() {
+        if (localCache.encrypted.userId !== $('#userID').val()) {
+            return;
+        }
         var decrypted = decrypt($('#password').val(), localCache.encrypted);
         if (decrypted) {
             fillInfo();
-            $('#form').find(':submit').show();
+            $('#login').show();
         }
     });
 
@@ -53,9 +67,3 @@ getCurrentRequest(function(currReq) {
 
     $('#status').show();
 });
-
-$('#register').on('click', function() {
-    window.location.href = myURL('register.html');
-});
-
-$('#userID').focus();
