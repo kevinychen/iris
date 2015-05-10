@@ -20,7 +20,8 @@ getCurrentRequest(function(currReq) {
     $('#requester').text(service);
     fillInfo();
     if (localCache.encrypted) {
-        $('userID').val(localCache.encrypted.userID);
+        $('#userID').val(localCache.encrypted.userId);
+        $('#password').focus();
     }
 
     $('#userID').change(function() {

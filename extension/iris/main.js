@@ -2,7 +2,6 @@
  * Javascript on background page of Iris extension
  */
 
-mockData = {kyc: {firstName: 'Kevin'}};
 localCache = {};
 
 // mapping from Iris websites to login request info

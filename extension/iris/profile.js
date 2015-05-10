@@ -20,7 +20,7 @@
     }
 
     if (localCache.encrypted) {
-        $('userID').val(localCache.encrypted.userID);
+        $('userID').val(localCache.encrypted.userId);
     }
 
     $('#userID').change(function() {
