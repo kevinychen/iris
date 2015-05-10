@@ -4,6 +4,9 @@
     function fillInfo(info) {
         var html = '';
         for (var attr in info) {
+            if (attr === 'services' || attr === 'auth_key') {
+                continue;
+            }
             html += '<tr>';
             html += '<td>' + attr + ':</td>';
             html += '<td><input type="text" id="attr-' + attr + '"/></td>';
@@ -39,9 +42,11 @@
             return;
         }
         var decrypted = decrypt($('#password').val(), localCache.encrypted);
-        if (decrypted) {
+        if (decrypted && $('#password').val()) {
             fillInfo(decrypted);
             $('#profile').find(':input').removeAttr('disabled');
+        } else {
+            $('#profile').find(':input').attr('disabled', 'disabled');
         }
     });
 
