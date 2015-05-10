@@ -10,11 +10,16 @@ function retrieveEncrypted(userID, callback) {
     }
     $.get(SERVER + userID, function(data) {
         localCache.encrypted = data;
+        localCache.decrypted = undefined;
         callback(data);
     });
 }
 
 function decrypt(password, encrypted) {
+    if (localCache.decrypted && localCache.encrypted === encrypted &&
+            password === '') {
+        return localCache.decrypted;
+    }
     try {
         localCache.decrypted = JSON.parse(sjcl.decrypt(
                     password, encrypted.encryptionParams));
