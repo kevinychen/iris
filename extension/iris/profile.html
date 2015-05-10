@@ -9,40 +9,22 @@
     <body>
         <div class="container">
             <img src="resources/logo.png" alt="">
-            <div>Profile</div>
-            <div id="profile">
-                <table>
-                    <tr>
-                        <td>User ID:</td>
-                        <td><input type="text" id="user" disabled/></td>
-                    </tr>
-                    <tr>
-                        <td>First Name:</td>
-                        <td><input type="text" id="firstName" disabled/></td>
-                    </tr>
-                    <tr>
-                        <td>Middle Name:</td>
-                        <td><input type="text" id="middleName"/></td>
-                    </tr>
-                    <tr>
-                        <td>Last Name:</td>
-                        <td><input type="text" id="lastName" disabled/></td>
-                    </tr>
-                    <tr>
-                        <td>Email:</td>
-                        <td><input type="text" id="email" disabled/></td>
-                    </tr>
-                    <tr>
-                        <td>DOB:</td>
-                        <td><input type="text" id="dob" disabled/></td>
-                    </tr>
-                    <tr>
-                        <td>Home Phone:</td>
-                        <td><input type="text" id="homePhone"/></td>
-                    </tr>
+            <table>
+                <tr>
+                    <td>User ID:</td>
+                    <td><input type="text" id="userID"/></td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><input type="password" id="password"/></td>
+                </tr>
+            </table>
+            <div>
+                <p>Profile</p>
+                <table id="profile">
                 </table>
-                <input id="save" type="submit" class="btn" value="Save"/>
             </div>
+            <input id="save" type="submit" class="btn hide" value="Save"/>
         </div>
     </body>
     <script src="profile.js"></script>

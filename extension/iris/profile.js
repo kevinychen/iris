@@ -1,37 +1,48 @@
-chrome.runtime.onMessage.addListener(function(info, sender) {
-    if (sender.url) {
-        return;  // only accept message from main.js
+(function() {
+    function fillInfo(info) {
+        var html = '';
+        for (var attr in info) {
+            html += '<tr>';
+            html += '<td>' + attr + ':</td>';
+            html += '<td><input type="text" id="attr-' + attr + '"/></td>';
+            html += '</tr>';
+        }
+        $('#profile').html(html);
+
+        for (var attr in info) {
+            $('#attr-' + attr).val(info[attr]);
+            $('#attr-' + attr).on('input', function() {
+                if (!$('#save').is(':visible')) {
+                    $('#save').slideDown();
+                }
+            });
+        }
     }
-    if (info.error) {
-        console.log('error');
-        return;
+
+    if (localCache.encrypted) {
+        $('userID').val(localCache.encrypted.userID);
     }
-    $('#user').val(info.userId);
-    $('#firstName').val(info.firstName);
-    $('#middleName').val(info.middleName);
-    $('#lastName').val(info.lastName);
-    $('#email').val(info.email);
-    $('#dob').val(info.dob);
-    $('#homePhone').val(info.homePhone);
-    $(':input').on('input', function() {
-        if (!$('#save').is(':visible')) {
-            $('#save').slideDown();
+
+    $('#userID').change(function() {
+        retrieveEncrypted($('#userID').val(), function() {});
+    });
+    $('#password').on('input', function() {
+        var decrypted = decrypt($('#password').val(), localCache.encrypted);
+        if (decrypted) {
+            fillInfo(decrypted);
         }
     });
+
     $('#save').on('click', function() {
         $('#save').slideUp();
-        $.post(SERVER + $('#user').val(), {
-            middle_name: $('#middleName').val(),
-            home_phone: $('#homePhone').val(),
+        var postInfo = {};
+        $('#profile').find(':input').each(function(i, el) {
+            var id = $(el).attr('id');
+            var attr = id.substring('attr-'.length);
+            postInfo[attr] = $(el).val();
         });
+        update($('#userID').val(), $('#password').val(), postInfo);
     });
-    $('#profile').show();
-});
-chrome.runtime.sendMessage([
-        'firstName',
-        'middleName',
-        'lastName',
-        'email',
-        'dob',
-        'homePhone',
-        ]);
+
+    $('#userID').focus();
+})();

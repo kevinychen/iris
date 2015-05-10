@@ -8,7 +8,7 @@
         </div>
     </body>
     <script>
-        iris_request(['firstName'], function(info) {
+        iris_request({required: ['firstName']}, function(info) {
             $('#name').text('Hello, ' + info.firstName);
         });
     </script>

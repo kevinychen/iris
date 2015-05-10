@@ -10,27 +10,28 @@
     <body>
         <div class="container">
             <img src="resources/logo.png" alt="">
-            <div id="status">
+            <div id="status" class="hide">
                 <p><i id="requester">website.com</i> requests your:</p>
                 <ul id="requested_info">
                 </ul>
-            </div>
-            <div id="profile">
-                <p>Manage your Iris profile</p>
-                <ul></ul>
             </div>
             <form id="form">
                 <table>
                     <tr>
                         <td>User ID:</td>
-                        <td><input type="text" id="user"/></td>
+                        <td><input type="text" id="userID"/></td>
                     </tr>
                     <tr>
                         <td>Password:</td>
-                        <td><input type="password" id="pass"/></td>
+                        <td><input type="password" id="password"/></td>
                     </tr>
                 </table>
-                <input type="submit" class="btn" value="Login"/>
+                <div id="addinfo" class="hide">
+                    <p>Additional fields:</p>
+                    <table id="addtable">
+                    </table>
+                </div>
+                <input type="submit" class="btn hide" value="Login"/>
             </form>
             <div>
                 Register <a href="#" id="register">here</a>

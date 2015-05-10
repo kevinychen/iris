@@ -1,31 +1,60 @@
-getState(function(myTab, openRequests, currReq) {
-    if (currReq.tab.url == myURL('profile.html')) {
-        $('#profile').show();
-    } else {
-        $('#requester').text($.url(currReq.tab.url).attr('host'));
-        for (var key in currReq.args) {
-            var el = $('<li>').text(currReq.args[key]);
-            $('#requested_info').append(el);
+getCurrentRequest(function(currReq) {
+    var service = $.url(currReq.tab.url).attr('host');
+
+    function fillInfo() {
+        $('#requested_info').html('');
+        for (var request_type in currReq.args) {
+            var attributes = currReq.args[request_type];
+            for (var i = 0; i < attributes.length; i++) {
+                var attr = attributes[i];
+                var text = attr + ' (' + request_type + ')';
+                if (localCache.decrypted && localCache.decrypted[attr]) {
+                    text += ': ' + localCache.decrypted[attr];
+                }
+                var el = $('<li>').text(text);
+                $('#requested_info').append(el);
+            }
         }
-        $('#status').show();
     }
+
+    $('#requester').text(service);
+    fillInfo();
+    if (localCache.encrypted) {
+        $('userID').val(localCache.encrypted.userID);
+    }
+
+    $('#userID').change(function() {
+        retrieveEncrypted($('#userID').val(), function() {});
+    });
+    $('#password').on('input', function() {
+        var decrypted = decrypt($('#password').val(), localCache.encrypted);
+        if (decrypted) {
+            fillInfo();
+            $('#form').find(':submit').show();
+        }
+    });
 
     document.getElementById('form').onsubmit = function(e) {
         e.preventDefault(); // Prevent submission
 
-        retrieveInfo({
-            user: $('#user').val(),
-            pass: $('#pass').val()
-        }, currReq.args, function(info) {
-            chrome.tabs.sendMessage(currReq.tab.id, info);
-            openRequests[myTab.id] = undefined;
-            window.close();
+        retrieveEncrypted($('#userID').val(), function(encrypted) {
+            if (encrypted) {
+                var decrypted = decrypt($('#password').val(), encrypted);
+                if (decrypted) {
+                    var info = filterInfo(decrypted, service, currReq.args);
+                    chrome.tabs.sendMessage(currReq.tab.id, info);
+                    currReq.sent = true;
+                    window.close();
+                }
+            }
         });
     };
+
+    $('#status').show();
 });
 
 $('#register').on('click', function() {
     window.location.href = myURL('register.html');
 });
 
-$('#user').focus();
+$('#userID').focus();

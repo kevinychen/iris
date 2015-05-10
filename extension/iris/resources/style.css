@@ -19,10 +19,6 @@
     box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 
-#status, #profile, #save {
-    display: none;
-}
-
 .container img {
     width: 160px;
 }
@@ -69,4 +65,8 @@
     text-decoration: none;
     cursor: pointer;
     cursor: hand;
+}
+
+.hide {
+    display: none;
 }

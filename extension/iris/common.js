@@ -1,28 +1,51 @@
-const SERVER = 'https://simple.mit.edu:8107/api/users/';
+const POPUP_WIDTH = 500;
+const POPUP_HEIGHT = 400;
 
-/*
- * loginData is a dictionary of user credentials
- *   e.g. {user: 'Kevin', pass: 'secret'}
- * args is a list of attributes that the website wants
- *   e.g. ['name', 'email', 'phone number']
- * sends a dictionary with the attribute keys
- *   e.g. {name: 'Kevin', email: 'kyc@mit.edu', 'phone number': '123-456'}
- */
-function retrieveInfo(loginData, args, callback) {
-    $.get(SERVER + loginData.user, function(res) {
-        var info = {userId: res.userId};
-        for (var key in args) {
-            info[args[key]] = res[args[key]];
-        }
-        callback(info);
-    });
+localCache = chrome.extension.getBackgroundPage().localCache;
+mockData = chrome.extension.getBackgroundPage().mockData;
+
+function retrieveEncrypted(userID, callback) {
+    callback(mockData[userID]);
 }
 
-function getState(callback) {
+function decrypt(password, encrypted) {
+    return encrypted;
+}
+
+function update(userID, password, decrypted) {
+    mockData[userID] = decrypted;
+}
+
+function register(userID, password, decrypted, callback) {
+    mockData[userID] = decrypted;
+    callback();
+}
+
+function filterInfo(decrypted, service, request) {
+    var info = {};
+    for (var request_type in request) {
+        var attributes = request[request_type];
+        for (var i = 0; i < attributes.length; i++) {
+            var attr = attributes[i];
+            if (decrypted.services && decrypted.services[service] &&
+                    attr in decrypted.services[service]) {
+                // info specific to service
+                info[attr] = decrypted.services[service][attr];
+            } else {
+                info[attr] = decrypted[attr];
+            }
+        }
+    }
+    // ensure userID and nonce fields are correct
+    info.userID = decrypted.userID;
+    info.nonce = undefined;
+    return info;
+}
+
+function getCurrentRequest(callback) {
     chrome.tabs.getCurrent(function(myTab) {
         var backgroundPage = chrome.extension.getBackgroundPage();
-        var currReq = backgroundPage.openRequests[myTab.id];
-        callback(myTab, backgroundPage.openRequests, currReq);
+        callback(backgroundPage.openRequests[myTab.id]);
     });
 }
 

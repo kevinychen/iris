@@ -2,6 +2,9 @@
  * Javascript on background page of Iris extension
  */
 
+mockData = {kyc: {firstName: 'Kevin'}};
+localCache = {};
+
 // mapping from Iris websites to login request info
 openRequests = {};
 
@@ -18,8 +21,8 @@ chrome.runtime.onMessage.addListener(function(args, sender, sendResponse) {
         chrome.windows.create({
             tabId: tab.id,
             type: 'popup',
-            width: 500,
-            height: 400,
+            width: POPUP_WIDTH,
+            height: POPUP_HEIGHT,
             focused: true
         });
     });
@@ -29,9 +32,11 @@ chrome.runtime.onMessage.addListener(function(args, sender, sendResponse) {
 chrome.tabs.onRemoved.addListener(function(tabId, info) {
     var openRequest = openRequests[tabId];
     if (openRequest) {
-        chrome.tabs.sendMessage(openRequest.tab.id, {
-            error: 'User closed window.'
-        });
+        if (!openRequest.sent) {
+            chrome.tabs.sendMessage(openRequest.tab.id, {
+                error: 'User closed window.'
+            });
+        }
         openRequests[tabId] = undefined;
     }
 });

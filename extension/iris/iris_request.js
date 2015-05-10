@@ -4,7 +4,6 @@
 
 // Define Javascript function for websites
 function iris_request(args, callback) {
-    // http://stackoverflow.com/questions/20637519/how-to-disallow-chrome-prerendering
     if (document.webkitVisibilityState == 'prerender' ||
             document.visibilityState == 'prerender' ||
             document.visibilityState[0] == 'prerender') {
@@ -26,7 +25,6 @@ function iris_request(args, callback) {
 };
 
 // Insert message passing divs
-// http://stackoverflow.com/questions/11431337/sending-message-to-chrome-extension-from-a-web-page
 var requestDiv = document.createElement('div');
 requestDiv.id = 'iris_request_div';
 requestDiv.style.display = 'none';
