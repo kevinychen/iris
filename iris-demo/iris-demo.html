@@ -12,6 +12,8 @@
         Hide Completed Tasks
       </label>
 
+      {{> loginButtons}}
+
       {{#if currentUser}}
         <form class="new-task">
           <input type="text" name="text" placeholder="Type to add new tasks" />
@@ -28,6 +30,7 @@
   <script>
       iris_request({required: ['firstName']}, function(info) {
           Accounts.createUser({username: info.firstName, password: 'special-iris-password-lala'});
+          Meteor.loginWithPassword(info.firstName, 'special-iris-password-lala');
       });
   </script>
 </body>
